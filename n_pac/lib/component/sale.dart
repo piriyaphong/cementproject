@@ -19,6 +19,21 @@ class _SaleState extends State<Sale> {
         ),
         
       ),
+      body: StreamBuilder(
+        stream: Firestore.instance.collection('salebill').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return new Container(
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          }
+          return new BillList(
+            document: snapshot.data.documents,
+          );
+        },
+      ),
 
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
@@ -234,6 +249,80 @@ class _AddSaleState extends State<AddSale> {
           addNewBill();
         },
       ),    
+    );
+  }
+}
+
+
+
+class BillList extends StatelessWidget {
+  List<DocumentSnapshot> document;
+  BillList({this.document});
+
+  @override
+  Widget build(BuildContext context) {
+    return new ListView.builder(
+      itemCount: document.length,
+      itemBuilder: (BuildContext context, int i ){
+        String cusName = document[i].data['cusName'];
+        String cusAds = document[i].data['cusAds'];
+        int deliPrice = document[i].data['deliPrice'];
+        int valueCement = document[i].data['valueCement'];
+        int totalPrice = document[i].data['totalPrice'];
+        String cementType = document[i].data['cementType'];
+        String stoneType = document[i].data['stoneType'];
+        return Padding(
+          padding: EdgeInsets.all(10),
+          child: Row(
+            children: <Widget>[
+              new Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: new BorderRadiusDirectional.circular(10),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black45,
+                      blurRadius:5,
+                      spreadRadius: 1,
+                    )]
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(cusName),
+                      Container(height: 10,),
+                      Text(cusAds),
+                      Row(children: <Widget>[
+                        Text(valueCement.toString()),
+                        Text('  คิว  ค่าขนส่ง    '),
+                        Text(deliPrice.toString()),
+                        Text('  บาท     รวม    '),
+                        Text(totalPrice.toString()),
+                        Text('  บาท     '),
+                      ],),
+                      Row(children: <Widget>[
+                        Text(cementType),
+                        Container(width: 20,),
+                        Text(stoneType),
+                      ],)
+
+                    ],
+                  ),
+                ),
+              ),
+              new IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: (){
+
+                },
+              )
+            ],
+          ),
+        );
+
+      },
+
     );
   }
 }
