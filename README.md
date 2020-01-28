@@ -1,14 +1,14 @@
 # cementproject
-build on Flutter Framwork
-This project have 6 subsystem
-    -   sale system
-    -   money system
-    -   personel system
-    -   car system
-    -   petro system
-    -   stock system
+# build on Flutter Framwork
+# This project have 6 subsystem
+#   -   sale system
+#    -   money system
+#    -   personel system
+#  -   car system
+#   -   petro system
+#  -   stock system
     
     base on Firebase 
-    deploy and build to both of iOS and Android
+    Deploy and build to both of iOS and Android
     
     All subSystem will be add feature and update soon
