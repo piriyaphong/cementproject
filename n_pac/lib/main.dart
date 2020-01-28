@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:n_pac/component/sale.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,6 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListTile(
                     leading: Icon(Icons.shopping_cart,size: 50,color: Colors.white,),
                     title: Text('SALE',style: TextStyle(fontSize: 50,color: Colors.white),),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context)=>Sale()));
+                    },
                   ),
                 ),
               ),
