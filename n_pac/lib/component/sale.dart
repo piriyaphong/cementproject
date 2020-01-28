@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sale extends StatefulWidget {
   @override
@@ -41,6 +42,31 @@ class AddSale extends StatefulWidget {
 class _AddSaleState extends State<AddSale> {
   String cementType = '';
   String stoneType = '';
+  String cusName = '';
+  String cusAds = '';
+  int deliPrice ;
+  int valueCement ; 
+  int totalPrice ;
+
+  void addNewBill(){
+    Firestore.instance.runTransaction((Transaction transaction) async {
+      CollectionReference reference = Firestore.instance.collection('salebill');
+      await reference.add({
+        "cusName" : cusName,
+        "cusAds" : cusAds,
+        "cementType" : cementType,
+        "stoneType" : stoneType,
+        "deliPrice" : deliPrice,
+        "valueCement" : valueCement,
+        "totalPrice" : totalPrice,
+        "timeStamp" : DateTime.now(),
+
+      });
+    });
+    Navigator.pop(context);
+  }
+
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,13 +88,22 @@ class _AddSaleState extends State<AddSale> {
                   labelText: 'ชื่อลูกค้า',
                   alignLabelWithHint: true              
                 ),
-                
+                onChanged: (input){
+                  setState(() {
+                    cusName = input;
+                  });
+                },
               ),
               TextField(
                 decoration: InputDecoration(
                   labelText: 'ที่อยู่ลูกค้า',
                   alignLabelWithHint: true
                 ),
+                onChanged: (input){
+                  setState(() {
+                    cusAds = input;
+                  });
+                },
               ),
               TextField(
                 decoration: InputDecoration(
@@ -76,6 +111,11 @@ class _AddSaleState extends State<AddSale> {
                   alignLabelWithHint: true,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (input){
+                  setState(() {
+                    valueCement = num.tryParse(input);
+                  });
+                },
               ),
               TextField(
                 decoration: InputDecoration(
@@ -83,6 +123,11 @@ class _AddSaleState extends State<AddSale> {
                   alignLabelWithHint: true,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (input){
+                  setState(() {
+                    deliPrice = num.tryParse(input);
+                  });
+                },
               ),
               Container(
                 child: Column(
@@ -144,9 +189,9 @@ class _AddSaleState extends State<AddSale> {
                       leading: Radio(
                         groupValue: stoneType,
                         value: 'หินโขง',
-                        onChanged: (input){
+                        onChanged: (inputstone){
                           setState(() {
-                            cementType = input;
+                            stoneType = inputstone;
                           });
                         },
                       ),
@@ -156,13 +201,13 @@ class _AddSaleState extends State<AddSale> {
                       leading: Radio(
                         groupValue: stoneType,
                         value: 'หินภูเขา',
-                        onChanged: (input){
+                        onChanged: (inputstone){
                           setState(() {
-                            cementType = input;
+                            stoneType = inputstone;
                           });
                         },
-                      ),
-                    ),
+                      )
+                    )
                   ],
                 ),
               ),
@@ -172,6 +217,11 @@ class _AddSaleState extends State<AddSale> {
                   alignLabelWithHint: true,
                 ),
                 keyboardType: TextInputType.number,
+                onChanged: (input){
+                  setState(() {
+                    totalPrice = num.tryParse(input);
+                  });
+                },
               ),
             ],
           ),
@@ -180,10 +230,10 @@ class _AddSaleState extends State<AddSale> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.redAccent,
         child: Icon(Icons.save,color: Colors.white,),
-        onPressed: (){},
-      ),
-
-      
+        onPressed: (){
+          addNewBill();
+        },
+      ),    
     );
   }
 }
