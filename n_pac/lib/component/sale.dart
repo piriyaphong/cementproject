@@ -20,6 +20,7 @@ class _SaleState extends State<Sale> {
         ),
         
       ),
+      
       body: StreamBuilder(
         stream: Firestore.instance.collection('salebill').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
