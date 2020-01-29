@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:n_pac/component/car.dart';
 import 'package:n_pac/component/money.dart';
 import 'package:n_pac/component/personel.dart';
 import 'package:n_pac/component/sale.dart';
@@ -139,6 +140,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListTile(
                     leading: Icon(Icons.drive_eta,size: 50,color: Colors.white,),
                     title: Text('CAR',style: TextStyle(fontSize: 50,color: Colors.white),),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Car()));
+                    },
                   ),
                 ),
               ),
