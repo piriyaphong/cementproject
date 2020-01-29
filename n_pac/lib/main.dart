@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:n_pac/component/money.dart';
+import 'package:n_pac/component/personel.dart';
 import 'package:n_pac/component/sale.dart';
 
 void main() => runApp(MyApp());
@@ -40,6 +41,18 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.all(20),
           child: Column(
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(1),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  child: Text('Welcome',style: TextStyle(
+                    fontSize: 50,                   
+                    shadows:[
+                      Shadow(blurRadius: 20,color: Colors.black38,offset: Offset(5.0, 5.0),)
+                    ]
+                  ),),
+                ),
+              ),
               Padding(
                 padding: EdgeInsets.all(10),
                 child: Container(
@@ -103,6 +116,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListTile(
                     leading: Icon(Icons.person,size: 50,color: Colors.white,),
                     title: Text('PERSONEL',style: TextStyle(fontSize: 50,color: Colors.white),),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Personel()));
+                    },
                   ),
                 ),
               ),
