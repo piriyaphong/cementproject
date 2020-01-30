@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:n_pac/component/car.dart';
 import 'package:n_pac/component/money.dart';
 import 'package:n_pac/component/personel.dart';
+import 'package:n_pac/component/petro.dart';
 import 'package:n_pac/component/sale.dart';
 
 void main() => runApp(MyApp());
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.redAccent,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bgred.PNG'),
+                          image: AssetImage('assets/images/bgred.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
@@ -107,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.pinkAccent,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bgpink.PNG'),
+                          image: AssetImage('assets/images/bgpink.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
@@ -142,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.orangeAccent,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bgorange.PNG'),
+                          image: AssetImage('assets/images/bgorange.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
@@ -177,7 +178,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.yellow,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bgyellow.PNG'),
+                          image: AssetImage('assets/images/bgyellow.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
@@ -212,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.green,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bggreen.PNG'),
+                          image: AssetImage('assets/images/bggreen.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
@@ -232,6 +233,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       'PETRO',
                       style: TextStyle(fontSize: 50, color: Colors.white),
                     ),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Petro()));
+                    },
                   ),
                 ),
               ),
@@ -243,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   decoration: BoxDecoration(
                       //color: Colors.lightBlue,
                       image: DecorationImage(
-                          image: AssetImage('assets/images/bgblue.PNG'),
+                          image: AssetImage('assets/images/bgblue.jpg'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
