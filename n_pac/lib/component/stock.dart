@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:n_pac/edit/stockEdit.dart';
 
 class Stock extends StatefulWidget {
   @override
@@ -233,7 +234,13 @@ class ListStock extends StatelessWidget {
                 IconButton(
                   icon: Icon(Icons.edit),
                   onPressed: (){
-
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (context)=>EditStock(
+                      cement : cement,
+                      sand : sand,
+                      stoneType1 : stoneType1,
+                      stoneType2 : stoneType2,
+                      index : document[i].reference
+                    )));
                   },
                 )
               ],
