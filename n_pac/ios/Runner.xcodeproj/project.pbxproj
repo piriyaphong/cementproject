@@ -405,7 +405,11 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+>>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -548,7 +552,11 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+>>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -583,7 +591,11 @@
 					"$(PROJECT_DIR)/Flutter",
 				);
 				INFOPLIST_FILE = Runner/Info.plist;
+<<<<<<< HEAD
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+=======
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+>>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
