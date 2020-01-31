@@ -35,6 +35,7 @@ end
 target 'Runner' do
   use_frameworks!
   use_modular_headers!
+  pod 'PromisesSwift', '~> 1.2.2'
   
   # Flutter Pod
   pod 'Firebase/Analytics'
