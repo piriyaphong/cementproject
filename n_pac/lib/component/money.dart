@@ -17,9 +17,7 @@ class _MoneyState extends State<Money> {
         title: Text('Money',style: TextStyle(color: Colors.white),),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ),
-        
-        
+        ), 
       ),
 
        body: StreamBuilder(
