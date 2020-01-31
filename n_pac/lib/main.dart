@@ -3,6 +3,7 @@ import 'package:n_pac/component/car.dart';
 import 'package:n_pac/component/money.dart';
 import 'package:n_pac/component/personel.dart';
 import 'package:n_pac/component/sale.dart';
+import 'package:n_pac/component/stock.dart';
 
 import 'component/petro.dart';
 
@@ -286,6 +287,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       'STOCK',
                       style: TextStyle(fontSize: 50, color: Colors.white),
                     ),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Stock()));
+                    },
                   ),
                 ),
               ),

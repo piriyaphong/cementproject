@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:n_pac/edit/pertroEdit.dart';
 
 class Petro extends StatefulWidget {
   @override
@@ -220,7 +221,15 @@ class ListPetro extends StatelessWidget {
               ),
               new IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: (){},
+                onPressed: (){
+                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => EditPetro(
+                    car: car,
+                    petroCost:  petroCost,
+                    petroMiles: petroMiles,
+                    petroRate: petroRate,
+                    index: document[i].reference,
+                  )));
+                },
               )
             ],
           ),

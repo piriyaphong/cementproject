@@ -58,7 +58,7 @@ class _EditPersonelState extends State<EditPersonel> {
 
   void _deletePersonel() {
     Firestore.instance.runTransaction((Transaction transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(widget.index);
+      //DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.delete(widget.index);
     });
     Navigator.pop(context);
