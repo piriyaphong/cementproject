@@ -74,17 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
                       color: Colors.redAccent,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bgred.jpg'),
                       //     fit: BoxFit.fill),
-=======
-                      //color: Colors.redAccent,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgred.jpg'),
-                          fit: BoxFit.fill),
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -118,17 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
                       color: Colors.pinkAccent,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bgpink.jpg'),
                       //     fit: BoxFit.fill),
-=======
-                      //color: Colors.pinkAccent,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgpink.jpg'),
-                          fit: BoxFit.fill),
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -199,17 +185,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
                       color: Colors.yellow,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bgyellow.jpg'),
                       //     fit: BoxFit.fill),
-=======
-                      //color: Colors.yellow,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgyellow.jpg'),
-                          fit: BoxFit.fill),
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -243,19 +222,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
                       color: Colors.green,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bggreen.jpg'),
                       //     fit: BoxFit.fill),
                       // borderRadius: new BorderRadiusDirectional.circular(10),
-=======
-                      //color: Colors.green,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bggreen.jpg'),
-                          fit: BoxFit.fill),
-                      borderRadius: new BorderRadiusDirectional.circular(10),
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black45,
@@ -288,19 +259,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
                       color: Colors.lightBlue,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bgblue.jpg'),
                       //     fit: BoxFit.fill),
                       // borderRadius: new BorderRadiusDirectional.circular(10),
-=======
-                      //color: Colors.lightBlue,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgblue.jpg'),
-                          fit: BoxFit.fill),
-                      borderRadius: new BorderRadiusDirectional.circular(10),
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black45,
