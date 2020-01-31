@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:n_pac/component/car.dart';
 import 'package:n_pac/component/money.dart';
 import 'package:n_pac/component/personel.dart';
 import 'package:n_pac/component/sale.dart';
+
+import 'component/petro.dart';
 
 void main() => runApp(MyApp());
 
@@ -72,17 +75,17 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
+
                       color: Colors.redAccent,
                       // image: DecorationImage(
                       //     image: AssetImage('assets/images/bgred.jpg'),
                       //     fit: BoxFit.fill),
-=======
+
                       //color: Colors.redAccent,
                       image: DecorationImage(
                           image: AssetImage('assets/images/bgred.PNG'),
                           fit: BoxFit.fill),
->>>>>>> parent of 3f0c3d0... Update petro system
+
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -116,17 +119,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
-                      color: Colors.pinkAccent,
-                      // image: DecorationImage(
-                      //     image: AssetImage('assets/images/bgpink.jpg'),
-                      //     fit: BoxFit.fill),
-=======
+
                       //color: Colors.pinkAccent,
                       image: DecorationImage(
                           image: AssetImage('assets/images/bgpink.PNG'),
                           fit: BoxFit.fill),
->>>>>>> parent of 3f0c3d0... Update petro system
+
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -197,17 +195,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
-                      color: Colors.yellow,
-                      // image: DecorationImage(
-                      //     image: AssetImage('assets/images/bgyellow.jpg'),
-                      //     fit: BoxFit.fill),
-=======
                       //color: Colors.yellow,
                       image: DecorationImage(
                           image: AssetImage('assets/images/bgyellow.PNG'),
                           fit: BoxFit.fill),
->>>>>>> parent of 3f0c3d0... Update petro system
+
                       borderRadius: new BorderRadiusDirectional.circular(10),
                       boxShadow: [
                         BoxShadow(
@@ -219,6 +211,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: ListTile(
                     leading: Icon(Icons.drive_eta,size: 50,color: Colors.white,),
                     title: Text('CAR',style: TextStyle(fontSize: 50,color: Colors.white),),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder:  (context) => Car()));
+                    },
                   ),
                 ),
               ),
@@ -230,19 +225,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
-                      color: Colors.green,
-                      // image: DecorationImage(
-                      //     image: AssetImage('assets/images/bggreen.jpg'),
-                      //     fit: BoxFit.fill),
-                      // borderRadius: new BorderRadiusDirectional.circular(10),
-=======
+
                       //color: Colors.green,
                       image: DecorationImage(
                           image: AssetImage('assets/images/bggreen.PNG'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
->>>>>>> parent of 3f0c3d0... Update petro system
+
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black45,
@@ -260,6 +249,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       'PETRO',
                       style: TextStyle(fontSize: 50, color: Colors.white),
                     ),
+                    onTap: (){
+                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Petro()));
+                    },
                   ),
                 ),
               ),
@@ -272,19 +264,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 100,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-<<<<<<< HEAD
-                      color: Colors.lightBlue,
-                      // image: DecorationImage(
-                      //     image: AssetImage('assets/images/bgblue.jpg'),
-                      //     fit: BoxFit.fill),
-                      // borderRadius: new BorderRadiusDirectional.circular(10),
-=======
                       //color: Colors.lightBlue,
                       image: DecorationImage(
                           image: AssetImage('assets/images/bgblue.PNG'),
                           fit: BoxFit.fill),
                       borderRadius: new BorderRadiusDirectional.circular(10),
->>>>>>> parent of 3f0c3d0... Update petro system
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black45,
