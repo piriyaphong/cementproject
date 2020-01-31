@@ -70,7 +70,7 @@ class _EditPetroState extends State<EditPetro> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete),
+            icon: Icon(Icons.delete,color: Colors.white,),
             onPressed: (){_deletePetro();},
           )
         ], 

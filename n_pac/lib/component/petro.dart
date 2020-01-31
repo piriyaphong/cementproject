@@ -193,6 +193,11 @@ class ListPetro extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: <Widget>[
+              new Container(
+                width: 30,
+                child: Text((i+1).toString()),
+              ),
+
               new Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),

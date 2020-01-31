@@ -277,6 +277,7 @@ class BillList extends StatelessWidget {
           padding: EdgeInsets.all(10),
           child: Row(
             children: <Widget>[
+              
               new Expanded(
                 child: Container(
                   decoration: BoxDecoration(
