@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:n_pac/component/car.dart';
-import 'package:n_pac/component/money.dart';
-import 'package:n_pac/component/personel.dart';
-import 'package:n_pac/component/sale.dart';
-import 'package:n_pac/component/stock.dart';
-
-import 'component/petro.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:n_pac/component/homeScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,272 +29,76 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
+bool _isLoggedIn = false;
+
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
+  
+  _login() async{
+   //FirebaseUserMetadata userMetadata = await _auth.sign 
+    try{
+      await _googleSignIn.signIn();
+      
+      setState(() {
+        _isLoggedIn = true;
+       Navigator.push(context, new MaterialPageRoute(builder: (context) => HomeScreen(
+         googleSignIn: googleSignIn,
+       )));
+      });
+    } catch (err){
+      print(err);
+    }
+  }
+
+  _logout(){
+    _googleSignIn.signOut();
+    setState(() {
+      _isLoggedIn = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'N-PAC',
-          style: TextStyle(color: Colors.white),
-        ),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
-        // flexibleSpace: Image(
-        //   image: AssetImage('assets/images/bgred.PNG'),
-        //   fit: BoxFit.cover,
-        // ),
-        // backgroundColor: Colors.transparent,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('assets/images/bggreen.PNG'),
+                fit: BoxFit.none)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.all(1),
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Welcome',
-                    style: TextStyle(fontSize: 50, shadows: [
-                      Shadow(
-                        blurRadius: 20,
-                        color: Colors.black38,
-                        offset: Offset(5.0, 5.0),
-                      )
-                    ]),
+            Container(
+                alignment: Alignment.center,
+                width: double.maxFinite,
+                child: Text(
+                  'N-PAC',
+                  style: TextStyle(fontSize: 100, color: Colors.white),
+                )),
+            Container(
+              width: 300,
+              child: Card(
+                child: ListTile( 
+                                   
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: AssetImage('assets/images/googleicon.png'),
+                            fit: BoxFit.fill)),
                   ),
+                  title: Text('Sign in with Google',style: TextStyle(color: Colors.black54),),
+                  onTap: (){
+                    _login();
+                  },
                 ),
+                
               ),
-
-
-              //Sale system
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-
-                      color: Colors.redAccent,
-                      // image: DecorationImage(
-                      //     image: AssetImage('assets/images/bgred.jpg'),
-                      //     fit: BoxFit.fill),
-
-                      //color: Colors.redAccent,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgred.PNG'),
-                          fit: BoxFit.fill),
-
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.shopping_cart,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'SALE',
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                          new MaterialPageRoute(builder: (context) => Sale()));
-                    },
-                  ),
-                ),
-              ),
-              
-              //Money system
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-
-                      //color: Colors.pinkAccent,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgpink.PNG'),
-                          fit: BoxFit.fill),
-
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.attach_money,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'MONEY',
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                          new MaterialPageRoute(builder: (context) => Money()));
-                    },
-                  ),
-                ),
-              ),
-              
-              //Personel system
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      //color: Colors.orangeAccent,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgorange.PNG'),
-                          fit: BoxFit.fill),
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.person,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'PERSONEL',
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (context) => Personel()));
-                    },
-                  ),
-                ),
-              ),
-              
-              //Car system
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      //color: Colors.yellow,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgyellow.PNG'),
-                          fit: BoxFit.fill),
-
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(Icons.drive_eta,size: 50,color: Colors.white,),
-                    title: Text('CAR',style: TextStyle(fontSize: 50,color: Colors.white),),
-                    onTap: (){
-                      Navigator.of(context).push(new MaterialPageRoute(builder:  (context) => Car()));
-                    },
-                  ),
-                ),
-              ),
-              
-              //Petro system
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-
-                      //color: Colors.green,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bggreen.PNG'),
-                          fit: BoxFit.fill),
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.local_gas_station,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'PETRO',
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Petro()));
-                    },
-                  ),
-                ),
-              ),
-              
-              
-              //Stock System
-              Padding(
-                padding: EdgeInsets.all(10),
-                child: Container(
-                  height: 100,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      //color: Colors.lightBlue,
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/bgblue.PNG'),
-                          fit: BoxFit.fill),
-                      borderRadius: new BorderRadiusDirectional.circular(10),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45,
-                          blurRadius: 10,
-                          spreadRadius: 1,
-                        )
-                      ]),
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.store_mall_directory,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      'STOCK',
-                      style: TextStyle(fontSize: 50, color: Colors.white),
-                    ),
-                    onTap: (){
-                      Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Stock()));
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
