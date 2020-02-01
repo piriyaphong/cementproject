@@ -1,11 +1,11 @@
+
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:n_pac/component/homeScreen.dart';
+
+import 'component/homeScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -29,33 +29,17 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-final GoogleSignIn googleSignIn = GoogleSignIn();
-bool _isLoggedIn = false;
+  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final GoogleSignIn googleSignIn = new GoogleSignIn();
+  bool isSignIn = false;
 
-  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
-  
-  _login() async{
-   //FirebaseUserMetadata userMetadata = await _auth.sign 
-    try{
-      await _googleSignIn.signIn();
-      
-      setState(() {
-        _isLoggedIn = true;
-       Navigator.push(context, new MaterialPageRoute(builder: (context) => HomeScreen(
-         googleSignIn: googleSignIn,
-       )));
-      });
-    } catch (err){
-      print(err);
-    }
-  }
+  Future<FirebaseUser> _signIn() async{ 
+    final GoogleSignInAccount googleUser = await googleSignIn.signIn();
+    final GoogleSignInAuthentication googleSignInAuthentication = await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
+    FirebaseUser firebaseUser  = await firebaseAuth.signInWithCredential(credential);
+    Navigator.of(context).push( MaterialPageRoute(builder: (context)=> HomeScreen(user: firebaseUser, googleSignIn:googleSignIn)));
 
-  _logout(){
-    _googleSignIn.signOut();
-    setState(() {
-      _isLoggedIn = false;
-    });
   }
 
   @override
@@ -77,7 +61,7 @@ bool _isLoggedIn = false;
                   'N-PAC',
                   style: TextStyle(fontSize: 100, color: Colors.white),
                 )),
-            Container(
+                Container(
               width: 300,
               child: Card(
                 child: ListTile( 
@@ -92,15 +76,21 @@ bool _isLoggedIn = false;
                   ),
                   title: Text('Sign in with Google',style: TextStyle(color: Colors.black54),),
                   onTap: (){
-                    _login();
+                    _signIn();
                   },
                 ),
                 
               ),
             )
+            
+             
           ],
         ),
       ),
     );
   }
 }
+
+
+
+
