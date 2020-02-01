@@ -27,8 +27,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <Testables>
-      </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
@@ -38,16 +36,8 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-<<<<<<< HEAD
-=======
-      <AdditionalOptions>
-      </AdditionalOptions>
-<<<<<<< HEAD
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
       <Testables>
       </Testables>
-=======
->>>>>>> parent of 3f0c3d0... Update petro system
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -69,11 +59,6 @@
             ReferencedContainer = "container:Runner.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-<<<<<<< HEAD
-=======
-      <AdditionalOptions>
-      </AdditionalOptions>
->>>>>>> 3f0c3d0ec2314603f49945d2ca0cdf9c2380c831
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Profile"
