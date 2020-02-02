@@ -197,7 +197,9 @@ void _signOut(){
                     ),
                     onTap: () {
                       Navigator.of(context).push(
-                          new MaterialPageRoute(builder: (context) => Money()));
+                          new MaterialPageRoute(builder: (context) => Money(
+                           
+                          )));
                     },
                   ),
                 ),

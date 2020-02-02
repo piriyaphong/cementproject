@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class EditMoney extends StatefulWidget {
@@ -6,6 +7,7 @@ class EditMoney extends StatefulWidget {
   String moneyNote;
   String moneyType;
   int moneyValue;
+ 
   final index;
   @override
   _EditMoneyState createState() => _EditMoneyState();
@@ -16,6 +18,7 @@ class _EditMoneyState extends State<EditMoney> {
   String moneyNote;
   String moneyType;
   int moneyValue;
+  String email;
   TextEditingController controllermoneyName;
   TextEditingController controllermoneyNote;
   TextEditingController controllermoneyType;
@@ -38,7 +41,8 @@ class _EditMoneyState extends State<EditMoney> {
         "moneyName" : moneyName,
         "moneyNote" : moneyNote,
         "moneyValue" : moneyValue,
-        "timeStamp" : DateTime.now()
+        "timeStamp" : DateTime.now(),
+      
       });
     });
     Navigator.pop(context);

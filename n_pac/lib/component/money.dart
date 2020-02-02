@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:n_pac/edit/moneyEdit.dart';
 
 class Money extends StatefulWidget {
+  Money({this.user});
+  final FirebaseUser user;
   @override
   _MoneyState createState() => _MoneyState();
 }
@@ -42,7 +45,9 @@ class _MoneyState extends State<Money> {
         backgroundColor: Colors.pinkAccent,
         child: Icon(Icons.add,color: Colors.white,),
         onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute (builder: (context) => AddMoney()));
+          Navigator.of(context).push(new MaterialPageRoute (builder: (context) => AddMoney(
+            
+          )));
         },
       ),
       
@@ -53,6 +58,8 @@ class _MoneyState extends State<Money> {
 
 
 class AddMoney extends StatefulWidget {
+  AddMoney({this.user});
+  final FirebaseUser user;
   @override
   _AddMoneyState createState() => _AddMoneyState();
 }
@@ -62,6 +69,7 @@ class _AddMoneyState extends State<AddMoney> {
   String moneyName;
   String moneyNote;
   int moneyValue;
+  String email;
 
   void _addMoney(){
     Firestore.instance.runTransaction((Transaction transaction) async {
@@ -71,7 +79,8 @@ class _AddMoneyState extends State<AddMoney> {
         "moneyName" : moneyName,
         "moneyNote" : moneyNote,
         "moneyValue" : moneyValue,
-        "timeStamp" : DateTime.now()
+        "timeStamp" : DateTime.now(),
+       
       });
     });
     Navigator.pop(context);
