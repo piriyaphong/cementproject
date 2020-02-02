@@ -64,6 +64,7 @@ class _AddSaleState extends State<AddSale> {
   int deliPrice ;
   int valueCement ; 
   int totalPrice ;
+ 
 
   void addNewBill(){
     Firestore.instance.runTransaction((Transaction transaction) async {
@@ -77,6 +78,7 @@ class _AddSaleState extends State<AddSale> {
         "valueCement" : valueCement,
         "totalPrice" : totalPrice,
         "timeStamp" : DateTime.now(),
+        
 
       });
     });
@@ -162,6 +164,7 @@ class _AddSaleState extends State<AddSale> {
                         onChanged: (input){
                           setState(() {
                             cementType = input;
+                            totalPrice = calculate(valueCement, deliPrice, 1800);
                           });
                         },
                       ),
@@ -174,6 +177,7 @@ class _AddSaleState extends State<AddSale> {
                         onChanged: (input){
                           setState(() {
                             cementType = input;
+                            totalPrice = calculate(valueCement, deliPrice, 1900);
                           });
                         },
                       ),
@@ -186,6 +190,7 @@ class _AddSaleState extends State<AddSale> {
                         onChanged: (input){
                           setState(() {
                             cementType = input;
+                            totalPrice = calculate(valueCement, deliPrice, 2200);
                           });
                         },
                       ),
@@ -228,18 +233,21 @@ class _AddSaleState extends State<AddSale> {
                   ],
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: 'รวมเงิน',
-                  alignLabelWithHint: true,
-                ),
-                keyboardType: TextInputType.number,
-                onChanged: (input){
-                  setState(() {
-                    totalPrice = num.tryParse(input) ;
-                  });
-                },
-              ),
+              // TextField(
+              //   decoration: InputDecoration(
+              //     labelText: 'รวมเงิน',
+              //     alignLabelWithHint: true,
+              //   ),
+              //   keyboardType: TextInputType.number,
+              //   onChanged: (input){
+              //     totalPrice = 1+1;
+              //     setState(() {
+                    
+              //     });
+              //   },
+              // ),
+              
+              
             ],
           ),
         ),
@@ -255,7 +263,11 @@ class _AddSaleState extends State<AddSale> {
   }
 }
 
-
+int calculate (int a, int b, int c){
+  int total =0 ;
+  total = (a*c)+b;
+  return total;
+}
 
 class BillList extends StatelessWidget {
   List<DocumentSnapshot> document;
