@@ -211,8 +211,8 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<FirebaseUser> signIn(String email, String password) async {
     try {
-      FirebaseUser user = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      FirebaseUser user = (await auth.signInWithEmailAndPassword(
+          email: email, password: password)).user;
 
       assert(user != null);
       assert(await user.getIdToken() != null);
@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
         idToken: googleAuth.idToken,
       );
 
-      final FirebaseUser user = await auth.signInWithCredential(credential);
+      final FirebaseUser user = (await auth.signInWithCredential(credential)).user;
       assert(user.email != null);
       assert(user.displayName != null);
       assert(!user.isAnonymous);

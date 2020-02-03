@@ -27,7 +27,7 @@ dependencies:
 
   # Add the dependencies for any other Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
-  firebase_auth: 
+  firebase_auth: ^0.15.4
   cloud_firestore: ^0.12.9+5
   google_sign_in: 
 

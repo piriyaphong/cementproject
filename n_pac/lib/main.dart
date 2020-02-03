@@ -1,11 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:n_pac/component/homeScreen.dart';
 
-import 'component/homeScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -33,13 +30,18 @@ class _MyHomePageState extends State<MyHomePage> {
   final GoogleSignIn googleSignIn = new GoogleSignIn();
   bool isSignIn = false;
 
-  Future<FirebaseUser> _signIn() async{ 
+  Future<FirebaseUser> _signIn() async {
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication = await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(idToken: googleSignInAuthentication.idToken, accessToken: googleSignInAuthentication.accessToken);
-    FirebaseUser firebaseUser  = await firebaseAuth.signInWithCredential(credential);
-    Navigator.of(context).push( MaterialPageRoute(builder: (context)=> HomeScreen(user: firebaseUser, googleSignIn:googleSignIn)));
-
+    final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleUser.authentication;
+    final AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: googleSignInAuthentication.idToken,
+        accessToken: googleSignInAuthentication.accessToken);
+    FirebaseUser firebaseUser = (await firebaseAuth.signInWithCredential(credential)).user;
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            HomeScreen(user: firebaseUser, googleSignIn: googleSignIn)));
+      return firebaseUser;
   }
 
   @override
@@ -52,8 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 fit: BoxFit.none)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          
-            children: <Widget>[
+          children: <Widget>[
             Container(
                 alignment: Alignment.center,
                 width: double.maxFinite,
@@ -61,11 +62,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   'N-PAC',
                   style: TextStyle(fontSize: 100, color: Colors.white),
                 )),
-                Container(
+            Container(
               width: 300,
               child: Card(
-                child: ListTile( 
-                                   
+                child: ListTile(
                   leading: Container(
                     width: 40,
                     height: 40,
@@ -74,23 +74,19 @@ class _MyHomePageState extends State<MyHomePage> {
                             image: AssetImage('assets/images/googleicon.png'),
                             fit: BoxFit.fill)),
                   ),
-                  title: Text('Sign in with Google',style: TextStyle(color: Colors.black54),),
-                  onTap: (){
+                  title: Text(
+                    'Sign in with Google',
+                    style: TextStyle(color: Colors.black54),
+                  ),
+                  onTap: () {
                     _signIn();
                   },
                 ),
-                
               ),
             )
-            
-             
           ],
         ),
       ),
     );
   }
 }
-
-
-
-
