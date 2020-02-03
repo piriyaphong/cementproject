@@ -30,6 +30,7 @@ dependencies:
   firebase_auth: ^0.15.4
   cloud_firestore: ^0.12.9+5
   google_sign_in: 
+  flutter_launcher_icons: "^0.7.3"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,7 +40,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
+flutter_icons:
+  android: true 
+  ios: false
+  image_path: "assets/images/iconApp.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -65,6 +69,8 @@ flutter:
     - assets/images/bgred.PNG
     - assets/images/bgyellow.PNG
     - assets/images/googleicon.png
+    - assets/images/iconApp.png
+
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
