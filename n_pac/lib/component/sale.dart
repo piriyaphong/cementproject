@@ -68,22 +68,58 @@ class _AddSaleState extends State<AddSale> {
   String _personelDeli;
 
   void addNewBill() {
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('salebill');
-      await reference.add({
-        "cusName": cusName,
-        "cusAds": cusAds,
-        "cementType": cementType,
-        "stoneType": stoneType,
-        "deliPrice": deliPrice,
-        "valueCement": valueCement,
-        "totalPrice": totalPrice,
-        "carDeli" : _car,
-        "personelDeli" : _personelDeli,
-        "timeStamp": DateTime.now(),
-      });
-    });
-    Navigator.pop(context);
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('salebill');
+                    await reference.add({
+                      "cusName": cusName,
+                      "cusAds": cusAds,
+                      "cementType": cementType,
+                      "stoneType": stoneType,
+                      "deliPrice": deliPrice,
+                      "valueCement": valueCement,
+                      "totalPrice": totalPrice,
+                      "carDeli": _car,
+                      "personelDeli": _personelDeli,
+                      "timeStamp": DateTime.now(),
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Sale()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
 
   @override
@@ -245,38 +281,31 @@ class _AddSaleState extends State<AddSale> {
                   return new Container(
                     //padding: EdgeInsets.all(20),
                     width: double.infinity,
-                    
+
                     child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         new Expanded(
                             child: new Container(
-                              padding:
-                                  EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
-                              child: new Text(
-                                "รถขนส่ง",
-                              ),
-                            )),
+                          padding: EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
+                          child: new Text(
+                            "รถขนส่ง",
+                          ),
+                        )),
                         new Expanded(
-                          
                           flex: 4,
                           child: new InputDecorator(
                             decoration: const InputDecoration(
-                              hintText: 'รถ',
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.redAccent
-                              )
-                            ),
+                                hintText: 'รถ',
+                                hintStyle: TextStyle(
+                                    fontSize: 20, color: Colors.redAccent)),
                             child: new DropdownButton(
-                              
-                              hint: Text('เลือกรถขนส่ง'),
-                              value: _car,
-                              isDense: true,
-                              items: snapshot.data.documents
+                                hint: Text('เลือกรถขนส่ง'),
+                                value: _car,
+                                isDense: true,
+                                items: snapshot.data.documents
                                     .map((DocumentSnapshot document) {
                                   return new DropdownMenuItem<String>(
-                                    
                                       value: document.data['carName'],
                                       child: new Container(
                                         width: 200,
@@ -284,7 +313,6 @@ class _AddSaleState extends State<AddSale> {
                                             //color: Colors.white,
                                             borderRadius:
                                                 new BorderRadius.circular(5.0)),
-                                        
                                         padding: EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
@@ -312,38 +340,31 @@ class _AddSaleState extends State<AddSale> {
                   return new Container(
                     //padding: EdgeInsets.all(20),
                     width: double.infinity,
-                    
+
                     child: Row(
-                     crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         new Expanded(
                             child: new Container(
-                              padding:
-                                  EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
-                              child: new Text(
-                                "รถขนส่ง",
-                              ),
-                            )),
+                          padding: EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
+                          child: new Text(
+                            "รถขนส่ง",
+                          ),
+                        )),
                         new Expanded(
-                          
                           flex: 4,
                           child: new InputDecorator(
                             decoration: const InputDecoration(
-                              hintText: 'พนักงานขนส่ง',
-                              hintStyle: TextStyle(
-                                fontSize: 20,
-                                color: Colors.redAccent
-                              )
-                            ),
+                                hintText: 'พนักงานขนส่ง',
+                                hintStyle: TextStyle(
+                                    fontSize: 20, color: Colors.redAccent)),
                             child: new DropdownButton(
-                              
-                              hint: Text('พนักงานส่ง'),
-                              value: _personelDeli,
-                              isDense: true,
-                              items: snapshot.data.documents
+                                hint: Text('พนักงานส่ง'),
+                                value: _personelDeli,
+                                isDense: true,
+                                items: snapshot.data.documents
                                     .map((DocumentSnapshot document) {
                                   return new DropdownMenuItem<String>(
-                                    
                                       value: document.data['personelNickName'],
                                       child: new Container(
                                         width: 200,
@@ -351,11 +372,11 @@ class _AddSaleState extends State<AddSale> {
                                             //color: Colors.white,
                                             borderRadius:
                                                 new BorderRadius.circular(5.0)),
-                                        
                                         padding: EdgeInsets.all(10),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Text(document.data['personelNickName']),
+                                          child: Text(document
+                                              .data['personelNickName']),
                                         ),
                                       ));
                                 }).toList(),
@@ -462,11 +483,8 @@ class BillList extends StatelessWidget {
                           Text(_personelDeli),
                           Text('รถขนส่ง :     '),
                           Text(_car),
-                      
-                          
                         ],
                       ),
-
                     ],
                   ),
                 ),

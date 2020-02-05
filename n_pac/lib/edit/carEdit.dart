@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:n_pac/component/car.dart';
 
 class EditCar extends StatefulWidget {
   String carName;
   String carId;
   String carType;
   final index;
-  EditCar({this.index,this.carId,this.carName,this.carType});
+  EditCar({this.index, this.carId, this.carName, this.carType});
   @override
   _EditCarState createState() => _EditCarState();
 }
@@ -19,27 +20,65 @@ class _EditCarState extends State<EditCar> {
   TextEditingController controllercarId;
   TextEditingController controllercarType;
 
-  void _deleteCar(){
-      Firestore.instance.runTransaction((Transaction transaction) async {
+  void _deleteCar() {
+    Firestore.instance.runTransaction((Transaction transaction) async {
       //DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.delete(widget.index);
-    }); 
-    Navigator.pop(context);
-  }
-  void _editCar(){
-     Firestore.instance.runTransaction((Transaction transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(widget.index);
-      await transaction.update(snapshot.reference, {
-        "carName" : carName,
-        "carId" : carId,
-        "carType" : carType,
-        "TimeStamp" : DateTime.now()
-      });
     });
     Navigator.pop(context);
   }
+
+  void _editCar() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("อัพเดตสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    DocumentSnapshot snapshot =
+                        await transaction.get(widget.index);
+                    await transaction.update(snapshot.reference, {
+                      "carName": carName,
+                      "carId": carId,
+                      "carType": carType,
+                      "TimeStamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Car()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
+  }
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
     carName = widget.carName;
     carId = widget.carId;
@@ -56,14 +95,16 @@ class _EditCarState extends State<EditCar> {
       appBar: AppBar(
         backgroundColor: Colors.yellow,
         centerTitle: true,
-        title: Text('Add Car',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Add Car',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.delete,color: Colors.white),
-            onPressed: (){
+            icon: Icon(Icons.delete, color: Colors.white),
+            onPressed: () {
               _deleteCar();
             },
           )
@@ -77,10 +118,8 @@ class _EditCarState extends State<EditCar> {
               TextFormField(
                 controller: controllercarName,
                 decoration: InputDecoration(
-                  labelText: 'ชื่อรถ',
-                  alignLabelWithHint: true
-                ),
-                onChanged: (input){
+                    labelText: 'ชื่อรถ', alignLabelWithHint: true),
+                onChanged: (input) {
                   setState(() {
                     carName = input;
                   });
@@ -89,10 +128,8 @@ class _EditCarState extends State<EditCar> {
               TextFormField(
                 controller: controllercarId,
                 decoration: InputDecoration(
-                  labelText: 'เลขทะเบียนรถ',
-                  alignLabelWithHint: true
-                ),
-                onChanged: (input){
+                    labelText: 'เลขทะเบียนรถ', alignLabelWithHint: true),
+                onChanged: (input) {
                   setState(() {
                     carId = input;
                   });
@@ -101,7 +138,9 @@ class _EditCarState extends State<EditCar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(height: 20,),
+                  Container(
+                    height: 20,
+                  ),
                   Container(
                     child: Text('ประเภท'),
                   ),
@@ -110,7 +149,7 @@ class _EditCarState extends State<EditCar> {
                     leading: Radio(
                       value: 'รถยนต์',
                       groupValue: carType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           carType = input;
                         });
@@ -122,7 +161,7 @@ class _EditCarState extends State<EditCar> {
                     leading: Radio(
                       value: 'รถบรรทุก',
                       groupValue: carType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           carType = input;
                         });
@@ -136,13 +175,14 @@ class _EditCarState extends State<EditCar> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color: Colors.white,),
-        onPressed: (){
-         _editCar();
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          _editCar();
         },
-        
       ),
-      
     );
   }
 }

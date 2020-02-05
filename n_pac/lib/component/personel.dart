@@ -11,15 +11,15 @@ class _PersonelState extends State<Personel> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
         centerTitle: true,
-        title: Text('Personel',style: TextStyle(color: Colors.white),),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
+        title: Text(
+          'Personel',
+          style: TextStyle(color: Colors.white),
         ),
-        
-        
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: StreamBuilder(
         stream: Firestore.instance.collection('personel').snapshots(),
@@ -38,17 +38,18 @@ class _PersonelState extends State<Personel> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orangeAccent,
-        child: Icon(Icons.add,color: Colors.white,),
-        onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context)=> AddPersonel()));
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => AddPersonel()));
         },
       ),
-      
     );
   }
 }
-
-
 
 class AddPersonel extends StatefulWidget {
   @override
@@ -64,33 +65,71 @@ class _AddPersonelState extends State<AddPersonel> {
   int personelPhone;
   int personelSalary;
 
-  void _addPersonel(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('personel');
-      await reference.add({
-        "personelName" : personelName,
-        "personelSirName" : personelSirName,
-        "personelNickName" : personelNickName,
-        "personelAddress" : personelAddress,
-        "personelIdenNum" : personelIdenNum,
-        "personelPhone" : personelPhone,
-        "personelSalary" : personelSalary,
-        "timestamp" : DateTime.now() 
-       });
-    });
-    Navigator.pop(context);
+  void _addPersonel() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('personel');
+                    await reference.add({
+                      "personelName": personelName,
+                      "personelSirName": personelSirName,
+                      "personelNickName": personelNickName,
+                      "personelAddress": personelAddress,
+                      "personelIdenNum": personelIdenNum,
+                      "personelPhone": personelPhone,
+                      "personelSalary": personelSalary,
+                      "timestamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Personel()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orangeAccent,
         centerTitle: true,
-        title: Text('Add Personel',style: TextStyle(color: Colors.white),),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
+        title: Text(
+          'Add Personel',
+          style: TextStyle(color: Colors.white),
         ),
-        
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -103,30 +142,29 @@ class _AddPersonelState extends State<AddPersonel> {
                     labelText: 'ชื่อ',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelName = input;
                     });
                   },
                 ),
-                
                 TextField(
                   decoration: InputDecoration(
                     labelText: 'นามสกุล',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelSirName = input;
                     });
                   },
                 ),
-                 TextField(
+                TextField(
                   decoration: InputDecoration(
                     labelText: 'ชื่อเล่น',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelNickName = input;
                     });
@@ -137,7 +175,7 @@ class _AddPersonelState extends State<AddPersonel> {
                     labelText: 'ที่อยู่',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelAddress = input;
                     });
@@ -150,7 +188,7 @@ class _AddPersonelState extends State<AddPersonel> {
                     labelText: 'เลขบัตรประจำตัวประชาชน',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelIdenNum = num.tryParse(input);
                     });
@@ -163,7 +201,7 @@ class _AddPersonelState extends State<AddPersonel> {
                     labelText: 'เบอร์โทรศัพท์',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelPhone = num.tryParse(input);
                     });
@@ -175,7 +213,7 @@ class _AddPersonelState extends State<AddPersonel> {
                     labelText: 'ค่าแรงต่อวัน',
                     alignLabelWithHint: true,
                   ),
-                  onChanged: (input){
+                  onChanged: (input) {
                     setState(() {
                       personelSalary = num.tryParse(input);
                     });
@@ -187,17 +225,15 @@ class _AddPersonelState extends State<AddPersonel> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color:Colors.white),
+        child: Icon(Icons.save, color: Colors.white),
         backgroundColor: Colors.orangeAccent,
-        onPressed: (){
+        onPressed: () {
           _addPersonel();
         },
       ),
-      
     );
   }
 }
-
 
 class ListPersonel extends StatelessWidget {
   List<DocumentSnapshot> document;
@@ -206,7 +242,7 @@ class ListPersonel extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView.builder(
       itemCount: document.length,
-      itemBuilder: (BuildContext context, int i){
+      itemBuilder: (BuildContext context, int i) {
         String personelName = document[i].data['personelName'];
         String personelSirName = document[i].data['personelSirName'];
         String personelNickName = document[i].data['personelNickName'];
@@ -220,30 +256,51 @@ class ListPersonel extends StatelessWidget {
             children: <Widget>[
               new Container(
                 width: 30,
-                child: Text((i+1).toString()),
+                child: Text((i + 1).toString()),
               ),
               new Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadiusDirectional.circular(10),
-                    boxShadow: [BoxShadow(
-                      color: Colors.black45,
-                      blurRadius:5,
-                      spreadRadius: 1,
-                    )]
-                  ),
+                      color: Colors.white,
+                      borderRadius: new BorderRadiusDirectional.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        )
+                      ]),
                   child: Column(
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Icon(Icons.person),Container(width: 10,),Text(personelName,style: TextStyle(fontSize: 20),),Container(width: 10,),Text(personelSirName,style: TextStyle(fontSize: 20)),Container(width: 10,),Text(personelNickName,style: TextStyle(fontSize: 20))
+                          Icon(Icons.person),
+                          Container(
+                            width: 10,
+                          ),
+                          Text(
+                            personelName,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Container(
+                            width: 10,
+                          ),
+                          Text(personelSirName, style: TextStyle(fontSize: 20)),
+                          Container(
+                            width: 10,
+                          ),
+                          Text(personelNickName, style: TextStyle(fontSize: 20))
                         ],
                       ),
                       Row(
                         children: <Widget>[
-                          Icon(Icons.phone),Container(width: 10,),Text('0'),Text(personelPhone.toString()),
+                          Icon(Icons.phone),
+                          Container(
+                            width: 10,
+                          ),
+                          Text('0'),
+                          Text(personelPhone.toString()),
                         ],
                       )
                     ],
@@ -252,26 +309,24 @@ class ListPersonel extends StatelessWidget {
               ),
               new IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: (){
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => EditPersonel(
-                    personelName :personelName,
-                    personelSirName : personelSirName,
-                    personelNickName : personelNickName,
-                    personelAddress: personelAddress,
-                    personelIdenNum : personelIdenNum,
-                    personelPhone : personelPhone,
-                    personelSalary : personelSalary,
-                    index: document[i].reference,
-                  )));
+                onPressed: () {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => EditPersonel(
+                            personelName: personelName,
+                            personelSirName: personelSirName,
+                            personelNickName: personelNickName,
+                            personelAddress: personelAddress,
+                            personelIdenNum: personelIdenNum,
+                            personelPhone: personelPhone,
+                            personelSalary: personelSalary,
+                            index: document[i].reference,
+                          )));
                 },
               )
             ],
           ),
         );
       },
-      
     );
   }
 }
-
-

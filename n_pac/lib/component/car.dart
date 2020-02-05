@@ -8,19 +8,20 @@ class Car extends StatefulWidget {
 }
 
 class _CarState extends State<Car> {
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
         centerTitle: true,
-        title: Text('Car',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Car',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
-        body: StreamBuilder(
+      body: StreamBuilder(
         stream: Firestore.instance.collection('car').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -36,11 +37,14 @@ class _CarState extends State<Car> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add,color: Colors.white,),
-        onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) => AddCar()));
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => AddCar()));
         },
-        
       ),
     );
   }
@@ -56,30 +60,67 @@ class _AddCarState extends State<AddCar> {
   String carId;
   String carType;
 
-  void _addCar(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('car');
-      await reference.add(
-        {
-          "carName" : carName,
-          "carId" : carId,
-          "carType" : carType,
-          "TimeStamp" : DateTime.now()
-        }
-      );
-    });
-    Navigator.pop(context);
+  void _addCar() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('car');
+                    await reference.add({
+                      "carName": carName,
+                      "carId": carId,
+                      "carType": carType,
+                      "TimeStamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context)
+                      .push(new MaterialPageRoute(builder: (context) => Car()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.yellow,
         centerTitle: true,
-        title: Text('Add Car',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Add Car',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -88,10 +129,8 @@ class _AddCarState extends State<AddCar> {
             children: <Widget>[
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'ชื่อรถ',
-                  alignLabelWithHint: true
-                ),
-                onChanged: (input){
+                    labelText: 'ชื่อรถ', alignLabelWithHint: true),
+                onChanged: (input) {
                   setState(() {
                     carName = input;
                   });
@@ -99,10 +138,8 @@ class _AddCarState extends State<AddCar> {
               ),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'เลขทะเบียนรถ',
-                  alignLabelWithHint: true
-                ),
-                onChanged: (input){
+                    labelText: 'เลขทะเบียนรถ', alignLabelWithHint: true),
+                onChanged: (input) {
                   setState(() {
                     carId = input;
                   });
@@ -111,7 +148,9 @@ class _AddCarState extends State<AddCar> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(height: 20,),
+                  Container(
+                    height: 20,
+                  ),
                   Container(
                     child: Text('ประเภท'),
                   ),
@@ -120,7 +159,7 @@ class _AddCarState extends State<AddCar> {
                     leading: Radio(
                       value: 'รถยนต์',
                       groupValue: carType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           carType = input;
                         });
@@ -132,7 +171,7 @@ class _AddCarState extends State<AddCar> {
                     leading: Radio(
                       value: 'รถบรรทุก',
                       groupValue: carType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           carType = input;
                         });
@@ -146,11 +185,13 @@ class _AddCarState extends State<AddCar> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color: Colors.white,),
-        onPressed: (){
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
+        onPressed: () {
           _addCar();
         },
-        
       ),
     );
   }
@@ -163,7 +204,7 @@ class ListCar extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView.builder(
       itemCount: document.length,
-      itemBuilder: (BuildContext context, int i){
+      itemBuilder: (BuildContext context, int i) {
         String carName = document[i].data['carName'];
         String carId = document[i].data['carId'];
         String carType = document[i].data['carType'];
@@ -173,25 +214,30 @@ class ListCar extends StatelessWidget {
             children: <Widget>[
               new Container(
                 width: 30,
-                child: Text((i+1).toString()),
+                child: Text((i + 1).toString()),
               ),
               new Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadiusDirectional.circular(10),
-                    boxShadow: [BoxShadow(
-                      color: Colors.black45,
-                      blurRadius:5,
-                      spreadRadius: 1,
-                    )]
-                  ),
-                  child: Column( 
+                      color: Colors.white,
+                      borderRadius: new BorderRadiusDirectional.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        )
+                      ]),
+                  child: Column(
                     children: <Widget>[
                       Row(
                         children: <Widget>[
-                          Text(carName),Container(width: 20,),Text(carId)
+                          Text(carName),
+                          Container(
+                            width: 20,
+                          ),
+                          Text(carId)
                         ],
                       )
                     ],
@@ -200,20 +246,19 @@ class ListCar extends StatelessWidget {
               ),
               new IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: (){
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => EditCar(
-                    carName : carName,
-                    carId : carId,
-                    carType : carType,
-                    index : document[i].reference
-                  )));
+                onPressed: () {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => EditCar(
+                          carName: carName,
+                          carId: carId,
+                          carType: carType,
+                          index: document[i].reference)));
                 },
               )
             ],
           ),
         );
       },
-      
     );
   }
 }

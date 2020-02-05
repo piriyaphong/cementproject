@@ -11,15 +11,17 @@ class _PetroState extends State<Petro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.green,
         centerTitle: true,
-        title: Text('Petro',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Petro',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
-        body: StreamBuilder(
+      body: StreamBuilder(
         stream: Firestore.instance.collection('petro').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -35,19 +37,16 @@ class _PetroState extends State<Petro> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add,color:Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
         backgroundColor: Colors.green,
-        onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) => AddPetro()));
+        onPressed: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => AddPetro()));
         },
       ),
-      
     );
   }
 }
-
-
-
 
 class AddPetro extends StatefulWidget {
   @override
@@ -59,131 +58,167 @@ class _AddPetroState extends State<AddPetro> {
   double petroRate;
   int petroCost;
   int petroMiles;
-  void _addPetro(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('petro');
-      await reference.add({
-        "car" : car,
-        "petroRate" : petroRate,
-        "petroCost" : petroCost,
-        "petroMiles": petroMiles,
-        "TimeStamp" : DateTime.now()
-      });
-    });
-    Navigator.pop(context);
+  void _addPetro() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('petro');
+                    await reference.add({
+                      "car": car,
+                      "petroRate": petroRate,
+                      "petroCost": petroCost,
+                      "petroMiles": petroMiles,
+                      "TimeStamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Petro()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.green,
         centerTitle: true,
-        title: Text('Add Petro',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Add Petro',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: SingleChildScrollView(
-       child: Padding(
-         padding: EdgeInsets.all(10),
-         child: Container(
-           child: Column(
-             children: <Widget>[
-               Container(
-                 padding: EdgeInsets.all(10),
-                 child: Column(
-                   crossAxisAlignment: CrossAxisAlignment.start,
-                   children: <Widget>[
-                     Container(child: Text('รถ'),),
-                     ListTile(
-                       title: Text('โม่'),
-                       leading: Radio(
-                         groupValue: car,
-                         value: 'โม่',
-                         onChanged: (input){
-                           setState(() {
-                             car = input;
-                           });
-                         },
-                       ),
-                     ),
-                     ListTile(
-                       title: Text('รถยนต์'),
-                       leading: Radio(
-                         groupValue: car,
-                         value: 'รถยนต์',
-                         onChanged: (input){
-                           setState(() {
-                             car = input;
-                           });
-                         },
-                       ),
-                     )
-                   ],
-                 ),
-               ),
-               TextField(
+        child: Padding(
+          padding: EdgeInsets.all(10),
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: Text('รถ'),
+                      ),
+                      ListTile(
+                        title: Text('โม่'),
+                        leading: Radio(
+                          groupValue: car,
+                          value: 'โม่',
+                          onChanged: (input) {
+                            setState(() {
+                              car = input;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: Text('รถยนต์'),
+                        leading: Radio(
+                          groupValue: car,
+                          value: 'รถยนต์',
+                          onChanged: (input) {
+                            setState(() {
+                              car = input;
+                            });
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                TextField(
                   keyboardType: TextInputType.number,
-                 decoration: InputDecoration(
-                   labelText: 'ราคาน้ำมัน',
-                   alignLabelWithHint: true
-                 ),
-                 onChanged: (input){
-                   setState(() {
-                     petroRate = num.tryParse(input);
-                   });
-                 },
-               ),
-               TextField(
-                keyboardType: TextInputType.number,
-                 decoration: InputDecoration(
-                   labelText: 'จำนวนเงินที่เติม',
-                   alignLabelWithHint: true
-                 ),
-                 onChanged: (input){
-                   setState(() {
-                     petroCost = num.tryParse(input);
-                   });
-                 },
-               ),
-               TextField(
+                  decoration: InputDecoration(
+                      labelText: 'ราคาน้ำมัน', alignLabelWithHint: true),
+                  onChanged: (input) {
+                    setState(() {
+                      petroRate = num.tryParse(input);
+                    });
+                  },
+                ),
+                TextField(
                   keyboardType: TextInputType.number,
-                 decoration: InputDecoration(
-                   labelText: 'เลขไมล์ก่อนเติม',
-                   alignLabelWithHint: true
-                 ),
-                 onChanged: (input){
-                   setState(() {
-                     petroMiles = num.tryParse(input);
-                   });
-                 },
-               )
-             ],
-           ),
-         ),
-       ),
+                  decoration: InputDecoration(
+                      labelText: 'จำนวนเงินที่เติม', alignLabelWithHint: true),
+                  onChanged: (input) {
+                    setState(() {
+                      petroCost = num.tryParse(input);
+                    });
+                  },
+                ),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                      labelText: 'เลขไมล์ก่อนเติม', alignLabelWithHint: true),
+                  onChanged: (input) {
+                    setState(() {
+                      petroMiles = num.tryParse(input);
+                    });
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color: Colors.white,),
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
         backgroundColor: Colors.green,
-        onPressed: (){
+        onPressed: () {
           _addPetro();
         },
       ),
-      
     );
   }
 }
 
-
 class ListPetro extends StatelessWidget {
   List<DocumentSnapshot> document;
-  ListPetro ({this.document});
+  ListPetro({this.document});
   @override
   Widget build(BuildContext context) {
     return new ListView.builder(
-      itemCount:  document.length,
-      itemBuilder: (BuildContext context, int i){
+      itemCount: document.length,
+      itemBuilder: (BuildContext context, int i) {
         String car = document[i].data['car'];
         double petroRate = document[i].data['petroRate'];
         int petroCost = document[i].data['petroCost'];
@@ -195,29 +230,51 @@ class ListPetro extends StatelessWidget {
             children: <Widget>[
               new Container(
                 width: 30,
-                child: Text((i+1).toString()),
+                child: Text((i + 1).toString()),
               ),
-
               new Expanded(
                 child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadiusDirectional.circular(10),
-                    boxShadow: [BoxShadow(
-                      color: Colors.black45,
-                      blurRadius:5,
-                      spreadRadius: 1,
-                    )]
-                  ),
+                      color: Colors.white,
+                      borderRadius: new BorderRadiusDirectional.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        )
+                      ]),
                   child: Column(
                     children: <Widget>[
-                      Row(children: <Widget>[
-                        Text(car),Container(width: 20,),Text('จำนวนที่เติม'),Container(width: 20,),Text(petroCost.toString())
-                      ],),
                       Row(
                         children: <Widget>[
-                          Text('ราคาน้ำมัน'),Container(width: 20,),Text(petroRate.toString()),Container(width: 20,),Text('เลขไมล์ก่อนเติม'),Container(width: 20,),Text(petroMiles.toString())
+                          Text(car),
+                          Container(
+                            width: 20,
+                          ),
+                          Text('จำนวนที่เติม'),
+                          Container(
+                            width: 20,
+                          ),
+                          Text(petroCost.toString())
+                        ],
+                      ),
+                      Row(
+                        children: <Widget>[
+                          Text('ราคาน้ำมัน'),
+                          Container(
+                            width: 20,
+                          ),
+                          Text(petroRate.toString()),
+                          Container(
+                            width: 20,
+                          ),
+                          Text('เลขไมล์ก่อนเติม'),
+                          Container(
+                            width: 20,
+                          ),
+                          Text(petroMiles.toString())
                         ],
                       )
                     ],
@@ -226,21 +283,21 @@ class ListPetro extends StatelessWidget {
               ),
               new IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: (){
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => EditPetro(
-                    car: car,
-                    petroCost:  petroCost,
-                    petroMiles: petroMiles,
-                    petroRate: petroRate,
-                    index: document[i].reference,
-                  )));
+                onPressed: () {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => EditPetro(
+                            car: car,
+                            petroCost: petroCost,
+                            petroMiles: petroMiles,
+                            petroRate: petroRate,
+                            index: document[i].reference,
+                          )));
                 },
               )
             ],
           ),
         );
       },
-      
     );
   }
 }

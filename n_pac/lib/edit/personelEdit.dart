@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:n_pac/component/personel.dart';
 
 class EditPersonel extends StatefulWidget {
   EditPersonel(
@@ -40,20 +41,56 @@ class _EditPersonelState extends State<EditPersonel> {
   TextEditingController controllerpersonelSalary;
 
   void _editPersonel() {
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(widget.index);
-      await transaction.update(snapshot.reference, {
-        "personelName": personelName,
-        "personelSirName": personelSirName,
-        "personelNickName": personelNickName,
-        "personelAddress": personelAddress,
-        "personelIdenNum": personelIdenNum,
-        "personelPhone": personelPhone,
-        "personelSalary": personelSalary,
-        "timestamp": DateTime.now()
-      });
-    });
-    Navigator.pop(context);
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("อัพเดตสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    DocumentSnapshot snapshot =
+                        await transaction.get(widget.index);
+                    await transaction.update(snapshot.reference, {
+                      "personelName": personelName,
+                      "personelSirName": personelSirName,
+                      "personelNickName": personelNickName,
+                      "personelAddress": personelAddress,
+                      "personelIdenNum": personelIdenNum,
+                      "personelPhone": personelPhone,
+                      "personelSalary": personelSalary,
+                      "timestamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => Personel()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
 
   void _deletePersonel() {
@@ -186,7 +223,7 @@ class _EditPersonelState extends State<EditPersonel> {
                   keyboardType: TextInputType.number,
                   maxLength: 10,
                   decoration: InputDecoration(
-                    labelText: 'เบอร์โทรศัพท์',
+                    labelText: 'เบอ���โทรศัพท์',
                     alignLabelWithHint: true,
                   ),
                   onChanged: (input) {

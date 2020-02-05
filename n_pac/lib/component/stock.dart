@@ -14,10 +14,12 @@ class _StockState extends State<Stock> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
-        title: Text('Stock',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Stock',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: StreamBuilder(
         stream: Firestore.instance.collection('stock').snapshots(),
@@ -34,19 +36,17 @@ class _StockState extends State<Stock> {
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add,color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white),
         backgroundColor: Colors.blueAccent,
-        onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute(builder: (context) => AddStock()));
+        onPressed: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => AddStock()));
         },
       ),
-      
     );
   }
 }
-
 
 class AddStock extends StatefulWidget {
   @override
@@ -54,34 +54,73 @@ class AddStock extends StatefulWidget {
 }
 
 class _AddStockState extends State<AddStock> {
-  int cement = 0 ;
-  int sand= 0;
+  int cement = 0;
+  int sand = 0;
   int stoneType1 = 0;
   int stoneType2 = 0;
 
-  void _addStock(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('stock');
-      await reference.add({
-        "cement" : cement,
-        "sand" : sand,
-        "stoneType1" : stoneType1,
-        "stoneType2" : stoneType2,
-        "TimeStamp" : DateTime.now()
-      });
-    });
-    Navigator.pop(context);
+  void _addStock() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('stock');
+                    await reference.add({
+                      "cement": cement,
+                      "sand": sand,
+                      "stoneType1": stoneType1,
+                      "stoneType2": stoneType2,
+                      "TimeStamp": DateTime.now()
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Stock()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         centerTitle: true,
-        title: Text('Update Stock',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Update Stock',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ), 
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -95,10 +134,9 @@ class _AddStockState extends State<AddStock> {
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'ปูน จำนวน กิโลกรัม',
-                    alignLabelWithHint: true
-                  ),
-                  onChanged: (input){
+                      labelText: 'ปูน จำนวน กิโลกรัม',
+                      alignLabelWithHint: true),
+                  onChanged: (input) {
                     setState(() {
                       cement = num.tryParse(input);
                     });
@@ -108,10 +146,9 @@ class _AddStockState extends State<AddStock> {
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'หินโขง จำนวน กิโลกรัม',
-                    alignLabelWithHint: true
-                  ),
-                  onChanged: (input){
+                      labelText: 'หินโขง จำนวน กิโลกรัม',
+                      alignLabelWithHint: true),
+                  onChanged: (input) {
                     setState(() {
                       sand = num.tryParse(input);
                     });
@@ -120,10 +157,9 @@ class _AddStockState extends State<AddStock> {
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'หินภูเขา จำนวน กิโลกรัม',
-                    alignLabelWithHint: true
-                  ),
-                  onChanged: (input){
+                      labelText: 'หินภูเขา จำนวน กิโลกรัม',
+                      alignLabelWithHint: true),
+                  onChanged: (input) {
                     setState(() {
                       stoneType1 = num.tryParse(input);
                     });
@@ -132,35 +168,29 @@ class _AddStockState extends State<AddStock> {
                 TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                    labelText: 'ทราย จำนวน กิโลกรัม',
-                    alignLabelWithHint: true
-                  ),
-                  onChanged: (input){
+                      labelText: 'ทราย จำนวน กิโลกรัม',
+                      alignLabelWithHint: true),
+                  onChanged: (input) {
                     setState(() {
                       stoneType2 = num.tryParse(input);
                     });
                   },
                 ),
-
               ],
             ),
           ),
         ),
       ),
-
-
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color: Colors.white),
+        child: Icon(Icons.save, color: Colors.white),
         backgroundColor: Colors.blueAccent,
-        onPressed: (){
+        onPressed: () {
           _addStock();
         },
       ),
-      
     );
   }
 }
-
 
 class ListStock extends StatelessWidget {
   List<DocumentSnapshot> document;
@@ -169,43 +199,41 @@ class ListStock extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView.builder(
       itemCount: document.length,
-      itemBuilder: (BuildContext context, int i){
+      itemBuilder: (BuildContext context, int i) {
         int cement = document[i].data['cement'];
         int sand = document[i].data['sand'];
         int stoneType1 = document[i].data['stoneType1'];
         int stoneType2 = document[i].data['stoneType2'];
 
         return Padding(
-          padding:  EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadiusDirectional.circular(10),
-                    boxShadow: [BoxShadow(
-                      color: Colors.black45,
-                      blurRadius:5,
-                      spreadRadius: 1,
-                    )]
-                  ),
+                color: Colors.white,
+                borderRadius: new BorderRadiusDirectional.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black45,
+                    blurRadius: 5,
+                    spreadRadius: 1,
+                  )
+                ]),
             padding: EdgeInsets.all(10),
             child: Row(
               children: <Widget>[
                 new Expanded(
-                  child: Container(                  
+                  child: Container(
                     padding: EdgeInsets.all(10),
-                    child: Text((i+1).toString()),
+                    child: Text((i + 1).toString()),
                   ),
                 ),
-                new Expanded(                
+                new Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('ปูน'),
-                      Text("ทราย")
-                    ],
+                    children: <Widget>[Text('ปูน'), Text("ทราย")],
                   ),
                 ),
-                 new Expanded(
+                new Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -214,15 +242,12 @@ class ListStock extends StatelessWidget {
                     ],
                   ),
                 ),
-                 new Expanded(
+                new Expanded(
                   child: Column(
-                    children: <Widget>[
-                      Text('หินโขง'),
-                      Text("หินภูเขา")
-                    ],
+                    children: <Widget>[Text('หินโขง'), Text("หินภูเขา")],
                   ),
                 ),
-                 new Expanded(
+                new Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -233,14 +258,14 @@ class ListStock extends StatelessWidget {
                 ),
                 IconButton(
                   icon: Icon(Icons.edit),
-                  onPressed: (){
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (context)=>EditStock(
-                      cement : cement,
-                      sand : sand,
-                      stoneType1 : stoneType1,
-                      stoneType2 : stoneType2,
-                      index : document[i].reference
-                    )));
+                  onPressed: () {
+                    Navigator.of(context).push(new MaterialPageRoute(
+                        builder: (context) => EditStock(
+                            cement: cement,
+                            sand: sand,
+                            stoneType1: stoneType1,
+                            stoneType2: stoneType2,
+                            index: document[i].reference)));
                   },
                 )
               ],
@@ -248,7 +273,6 @@ class ListStock extends StatelessWidget {
           ),
         );
       },
-      
     );
   }
 }

@@ -14,18 +14,17 @@ class _MoneyState extends State<Money> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         backgroundColor: Colors.pinkAccent,
         centerTitle: true,
-        title: Text('Money',style: TextStyle(color: Colors.white),),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
+        title: Text(
+          'Money',
+          style: TextStyle(color: Colors.white),
         ),
-        
-        
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
-
-       body: StreamBuilder(
+      body: StreamBuilder(
         stream: Firestore.instance.collection('money').snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
@@ -35,28 +34,26 @@ class _MoneyState extends State<Money> {
               ),
             );
           }
-          
+
           return new MoneyList(
             document: snapshot.data.documents,
           );
         },
       ),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.pinkAccent,
-        child: Icon(Icons.add,color: Colors.white,),
-        onPressed: (){
-          Navigator.of(context).push(new MaterialPageRoute (builder: (context) => AddMoney(
-            
-          )));
+        child: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        onPressed: () {
+          Navigator.of(context)
+              .push(new MaterialPageRoute(builder: (context) => AddMoney()));
         },
       ),
-      
     );
   }
 }
-
-
 
 class AddMoney extends StatefulWidget {
   AddMoney({this.user});
@@ -71,23 +68,57 @@ class _AddMoneyState extends State<AddMoney> {
   String moneyNote;
   int moneyValue;
   String email;
-  int totalBalance =0;
- 
- 
-  void _addMoney(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      CollectionReference reference = Firestore.instance.collection('money');
-      await reference.add({
-        "moneyType" : moneyType,
-        "moneyName" : moneyName,
-        "moneyNote" : moneyNote,
-        "moneyValue" : moneyValue,
-        "timeStamp" : DateTime.now(),
-        "totalBalance" : totalBalance
-       
-      });
-    });
-    Navigator.pop(context);
+  int totalBalance = 0;
+
+  void _addMoney() {
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("บันทึกสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    CollectionReference reference =
+                        Firestore.instance.collection('money');
+                    await reference.add({
+                      "moneyType": moneyType,
+                      "moneyName": moneyName,
+                      "moneyNote": moneyNote,
+                      "moneyValue": moneyValue,
+                      "timeStamp": DateTime.now(),
+                      "totalBalance": totalBalance
+                    });
+                  });
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Money()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
 
   @override
@@ -96,10 +127,12 @@ class _AddMoneyState extends State<AddMoney> {
       appBar: AppBar(
         backgroundColor: Colors.pinkAccent,
         centerTitle: true,
-        title: Text('Add Money',style: TextStyle(color: Colors.white),),
+        title: Text(
+          'Add Money',
+          style: TextStyle(color: Colors.white),
+        ),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))
-        ),        
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(30))),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -107,12 +140,11 @@ class _AddMoneyState extends State<AddMoney> {
           child: Column(
             children: <Widget>[
               TextField(
-
                 decoration: InputDecoration(
                   labelText: 'ชื่อรายการ',
                   alignLabelWithHint: true,
                 ),
-                onChanged: (input){
+                onChanged: (input) {
                   setState(() {
                     moneyName = input;
                   });
@@ -124,7 +156,7 @@ class _AddMoneyState extends State<AddMoney> {
                   labelText: 'จำนวนเงิน',
                   alignLabelWithHint: true,
                 ),
-                onChanged: (input){
+                onChanged: (input) {
                   setState(() {
                     moneyValue = num.tryParse(input);
                   });
@@ -135,7 +167,7 @@ class _AddMoneyState extends State<AddMoney> {
                   labelText: 'หมายเหตุ',
                   alignLabelWithHint: true,
                 ),
-                onChanged: (input){
+                onChanged: (input) {
                   setState(() {
                     moneyNote = input;
                   });
@@ -144,15 +176,19 @@ class _AddMoneyState extends State<AddMoney> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(height: 20,),
+                  Container(
+                    height: 20,
+                  ),
                   Text('ประเภทรายการ'),
-                  Container(height: 20,),
+                  Container(
+                    height: 20,
+                  ),
                   ListTile(
                     title: Text('รายรับ'),
                     leading: Radio(
                       value: 'รายรับ',
                       groupValue: moneyType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           moneyType = input;
                         });
@@ -164,7 +200,7 @@ class _AddMoneyState extends State<AddMoney> {
                     leading: Radio(
                       value: 'รายจ่าย',
                       groupValue: moneyType,
-                      onChanged: (input){
+                      onChanged: (input) {
                         setState(() {
                           moneyType = input;
                         });
@@ -174,28 +210,25 @@ class _AddMoneyState extends State<AddMoney> {
                 ],
               ),
               TextField(
-                decoration: InputDecoration(
-                  labelText: 'ยอดเงินคงเหลือ'
-                ),
+                decoration: InputDecoration(labelText: 'ยอดเงินคงเหลือ'),
               )
             ],
           ),
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save,color: Colors.white,),
+        child: Icon(
+          Icons.save,
+          color: Colors.white,
+        ),
         backgroundColor: Colors.pinkAccent,
-        onPressed: (){
+        onPressed: () {
           _addMoney();
         },
       ),
-      
     );
   }
 }
-
-
 
 class MoneyList extends StatelessWidget {
   List<DocumentSnapshot> document;
@@ -204,7 +237,7 @@ class MoneyList extends StatelessWidget {
   Widget build(BuildContext context) {
     return new ListView.builder(
       itemCount: document.length,
-      itemBuilder: (BuildContext context, int i){
+      itemBuilder: (BuildContext context, int i) {
         String moneyType = document[i].data['moneyType'];
         String moneyName = document[i].data['moneyName'];
         String moneyNote = document[i].data['moneyNote'];
@@ -217,63 +250,71 @@ class MoneyList extends StatelessWidget {
             children: <Widget>[
               new Container(
                 width: 30,
-                child: Text((i+1).toString()),
+                child: Text((i + 1).toString()),
               ),
               new Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: new BorderRadiusDirectional.circular(10),
-                    boxShadow: [BoxShadow(
-                      color: Colors.black45,
-                      blurRadius:5,
-                      spreadRadius: 1,
-                    )]
-                  ),
+                      color: Colors.white,
+                      borderRadius: new BorderRadiusDirectional.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45,
+                          blurRadius: 5,
+                          spreadRadius: 1,
+                        )
+                      ]),
                   padding: EdgeInsets.all(10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(moneyName,style: TextStyle(fontSize: 30),),
+                      Text(
+                        moneyName,
+                        style: TextStyle(fontSize: 30),
+                      ),
                       Row(
                         children: <Widget>[
                           Text(moneyType),
-                          Container(width: 20,),
+                          Container(
+                            width: 20,
+                          ),
                           Text(moneyValue.toString()),
                         ],
                       ),
-                       Row(
+                      Row(
                         children: <Widget>[
-                          Text('Note : ',style: TextStyle(color: Colors.black45),),
-                          Container(width: 20,),
+                          Text(
+                            'Note : ',
+                            style: TextStyle(color: Colors.black45),
+                          ),
+                          Container(
+                            width: 20,
+                          ),
                           Text(moneyNote),
                         ],
                       ),
-                      
                     ],
                   ),
                 ),
               ),
               new IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: (){
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => EditMoney(
-                    moneyName: moneyName,
-                    moneyNote: moneyNote,
-                    moneyType: moneyType,
-                    moneyValue: moneyValue,
-                    index: document[i].reference,
-                    totalBalance  : totalBalance,
-                  )));
+                onPressed: () {
+                  Navigator.of(context).push(new MaterialPageRoute(
+                      builder: (context) => EditMoney(
+                            moneyName: moneyName,
+                            moneyNote: moneyNote,
+                            moneyType: moneyType,
+                            moneyValue: moneyValue,
+                            index: document[i].reference,
+                            totalBalance: totalBalance,
+                          )));
                 },
               )
             ],
           ),
         );
-
       },
-      
     );
   }
 }
-

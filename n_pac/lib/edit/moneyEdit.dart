@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:n_pac/component/money.dart';
 class EditMoney extends StatefulWidget {
   EditMoney({this.index,this.moneyValue,this.moneyType,this.moneyName,this.moneyNote,this.totalBalance});
   String moneyName;
@@ -37,7 +38,35 @@ class _EditMoneyState extends State<EditMoney> {
   }
   
   void _editMoney(){
-    Firestore.instance.runTransaction((Transaction transaction) async {
+    
+    AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("อัพเดตสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance.runTransaction((Transaction transaction) async {
       DocumentSnapshot snapshot = await transaction.get(widget.index);
       await transaction.update(snapshot.reference, {
         "moneyType" : moneyType,
@@ -49,7 +78,14 @@ class _EditMoneyState extends State<EditMoney> {
       
       });
     });
-    Navigator.pop(context);
+                  Navigator.of(context).push(
+                      new MaterialPageRoute(builder: (context) => Money()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
   @override
   void initState(){
