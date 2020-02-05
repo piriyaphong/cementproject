@@ -2,11 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 class EditMoney extends StatefulWidget {
-  EditMoney({this.index,this.moneyValue,this.moneyType,this.moneyName,this.moneyNote});
+  EditMoney({this.index,this.moneyValue,this.moneyType,this.moneyName,this.moneyNote,this.totalBalance});
   String moneyName;
   String moneyNote;
   String moneyType;
   int moneyValue;
+  int totalBalance;
  
   final index;
   @override
@@ -19,10 +20,12 @@ class _EditMoneyState extends State<EditMoney> {
   String moneyType;
   int moneyValue;
   String email;
+  int totalBalance;
   TextEditingController controllermoneyName;
   TextEditingController controllermoneyNote;
   TextEditingController controllermoneyType;
   TextEditingController controllermoneyValue;
+  TextEditingController controllertotalBalance;
 
 
   void _deleteMoney() {
@@ -42,6 +45,7 @@ class _EditMoneyState extends State<EditMoney> {
         "moneyNote" : moneyNote,
         "moneyValue" : moneyValue,
         "timeStamp" : DateTime.now(),
+        "totalBalance" : totalBalance
       
       });
     });
@@ -58,6 +62,7 @@ class _EditMoneyState extends State<EditMoney> {
     controllermoneyNote = new TextEditingController(text: widget.moneyNote);
     controllermoneyType = new TextEditingController(text: widget.moneyType);
     controllermoneyValue = new TextEditingController(text: widget.moneyValue.toString());
+    controllertotalBalance = new TextEditingController(text: widget.totalBalance.toString());
   }
   
   
@@ -151,6 +156,14 @@ class _EditMoneyState extends State<EditMoney> {
                     ),
                   )
                 ],
+              ),
+              TextField(
+                controller: controllertotalBalance,
+                onChanged: (input){
+                  setState(() {
+                    totalBalance = total(num.tryParse(input), moneyValue);
+                  });
+                },
               )
             ],
           ),
@@ -168,4 +181,11 @@ class _EditMoneyState extends State<EditMoney> {
       
     );
   }
+}
+
+
+int total(int a, int b){
+  int total = 0;
+  total = a+b;
+  return total;
 }

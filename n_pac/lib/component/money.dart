@@ -35,6 +35,7 @@ class _MoneyState extends State<Money> {
               ),
             );
           }
+          
           return new MoneyList(
             document: snapshot.data.documents,
           );
@@ -70,7 +71,9 @@ class _AddMoneyState extends State<AddMoney> {
   String moneyNote;
   int moneyValue;
   String email;
-
+  int totalBalance =0;
+ 
+ 
   void _addMoney(){
     Firestore.instance.runTransaction((Transaction transaction) async {
       CollectionReference reference = Firestore.instance.collection('money');
@@ -80,6 +83,7 @@ class _AddMoneyState extends State<AddMoney> {
         "moneyNote" : moneyNote,
         "moneyValue" : moneyValue,
         "timeStamp" : DateTime.now(),
+        "totalBalance" : totalBalance
        
       });
     });
@@ -168,6 +172,11 @@ class _AddMoneyState extends State<AddMoney> {
                     ),
                   )
                 ],
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'ยอดเงินคงเหลือ'
+                ),
               )
             ],
           ),
@@ -200,6 +209,7 @@ class MoneyList extends StatelessWidget {
         String moneyName = document[i].data['moneyName'];
         String moneyNote = document[i].data['moneyNote'];
         int moneyValue = document[i].data['moneyValue'];
+        int totalBalance = document[i].data['totalBalance'];
 
         return Padding(
           padding: EdgeInsets.all(10),
@@ -253,6 +263,7 @@ class MoneyList extends StatelessWidget {
                     moneyType: moneyType,
                     moneyValue: moneyValue,
                     index: document[i].reference,
+                    totalBalance  : totalBalance,
                   )));
                 },
               )

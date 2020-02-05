@@ -43,7 +43,7 @@ dev_dependencies:
 flutter_icons:
   android: true 
   ios: false
-  image_path: "assets/images/iconApp.png"
+  image_path: "assets/images/AppIcon.PNG"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -70,6 +70,7 @@ flutter:
     - assets/images/bgyellow.PNG
     - assets/images/googleicon.png
     - assets/images/iconApp.png
+    - assets/images/AppIcon.png
 
     
   # An image asset can refer to one or more resolution-specific "variants", see

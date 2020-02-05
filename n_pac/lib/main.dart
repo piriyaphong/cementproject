@@ -55,12 +55,20 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            
+            Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                image: DecorationImage(image: AssetImage('assets/images/AppIcon.png'))
+              ),
+            ),
             Container(
                 alignment: Alignment.center,
                 width: double.maxFinite,
                 child: Text(
                   'N-PAC',
-                  style: TextStyle(fontSize: 100, color: Colors.white),
+                  style: TextStyle(fontSize: 50, color: Colors.white),
                 )),
             Container(
               width: 300,
