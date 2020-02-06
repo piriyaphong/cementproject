@@ -129,40 +129,67 @@ class _EditPetroState extends State<EditPetro> {
           child: Container(
             child: Column(
               children: <Widget>[
-                Container(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        child: Text('รถ'),
+                new StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance.collection('car').snapshots(),
+                  builder: (context, snapshot) {
+                    var length = snapshot.data.documents.length;
+                    DocumentSnapshot ds = snapshot.data.documents[length - 1];
+                    return new Container(
+                      //padding: EdgeInsets.all(20),
+                      width: double.infinity,
+
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          new Expanded(
+                              child: new Container(
+                            padding:
+                                EdgeInsets.fromLTRB(12.0, 10.0, 10.0, 10.0),
+                            child: new Text(
+                              "รถที่เติม",
+                            ),
+                          )),
+                          new Expanded(
+                            flex: 4,
+                            child: new InputDecorator(
+                              decoration: const InputDecoration(
+                                  hintText: 'รถ',
+                                  hintStyle: TextStyle(
+                                      fontSize: 20, color: Colors.redAccent)),
+                              child: new DropdownButton(
+                                  hint: Text('เลือกรถที่เติม'),
+                                  value: car,
+                                  isDense: true,
+                                  items: snapshot.data.documents
+                                      .map((DocumentSnapshot document) {
+                                    return new DropdownMenuItem<String>(
+                                        value: document.data['carName'],
+                                        child: new Container(
+                                          width: 200,
+                                          decoration: new BoxDecoration(
+                                              //color: Colors.white,
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      5.0)),
+                                          padding: EdgeInsets.all(10),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child:
+                                                Text(document.data['carName']),
+                                          ),
+                                        ));
+                                  }).toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      car = value;
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ],
                       ),
-                      ListTile(
-                        title: Text('โม่'),
-                        leading: Radio(
-                          groupValue: car,
-                          value: 'โม่',
-                          onChanged: (input) {
-                            setState(() {
-                              car = input;
-                            });
-                          },
-                        ),
-                      ),
-                      ListTile(
-                        title: Text('รถยนต์'),
-                        leading: Radio(
-                          groupValue: car,
-                          value: 'รถยนต์',
-                          onChanged: (input) {
-                            setState(() {
-                              car = input;
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
+                    );
+                  },
                 ),
                 TextField(
                   controller: controllerpetroRate,
