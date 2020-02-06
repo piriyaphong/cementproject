@@ -75,11 +75,46 @@ class _EditPetroState extends State<EditPetro> {
   }
 
   void _deletePetro() {
-    Firestore.instance.runTransaction((Transaction transaction) async {
-      //DocumentSnapshot snapshot = await transaction.get(widget.index);
-      await transaction.delete(widget.index);
-    });
-    Navigator.pop(context);
+   AlertDialog alertDialog = new AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      content: Container(
+        height: 160,
+        child: Column(
+          children: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              iconSize: 50,
+            ),
+            Container(
+              child: Text("ลบสำเร็จ"),
+            ),
+            Container(
+              height: 20,
+            ),
+            FlatButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('ตกลง'),
+                onPressed: () {
+                  Firestore.instance
+                      .runTransaction((Transaction transaction) async {
+                    //DocumentSnapshot snapshot = await transaction.get(widget.index);
+                    await transaction.delete(widget.index);
+                  });
+                  Navigator.of(context)
+                      .push(new MaterialPageRoute(builder: (context) => Petro()));
+                })
+          ],
+        ),
+      ),
+    );
+    showDialog(context: context, child: alertDialog);
   }
 
   @override
