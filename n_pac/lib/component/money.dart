@@ -68,7 +68,10 @@ class _AddMoneyState extends State<AddMoney> {
   String moneyNote;
   int moneyValue;
   String email;
-  int totalBalance = 0;
+
+
+
+  
 
   void _addMoney() {
     AlertDialog alertDialog = new AlertDialog(
@@ -102,14 +105,18 @@ class _AddMoneyState extends State<AddMoney> {
                       .runTransaction((Transaction transaction) async {
                     CollectionReference reference =
                         Firestore.instance.collection('money');
-                    await reference.add({
+                    DocumentReference docreference = Firestore.instance
+                        .collection('Total')
+                        .document('totalBalance');
+                     await reference.add({
                       "moneyType": moneyType,
                       "moneyName": moneyName,
                       "moneyNote": moneyNote,
                       "moneyValue": moneyValue,
                       "timeStamp": DateTime.now(),
-                      "totalBalance": totalBalance
+                      
                     });
+                     //await docreference.updateData({"temp": totalBalance,"timeStamp":DateTime.now()});
                   });
                   Navigator.of(context).push(
                       new MaterialPageRoute(builder: (context) => Money()));
@@ -209,8 +216,25 @@ class _AddMoneyState extends State<AddMoney> {
                   )
                 ],
               ),
-              TextField(
-                decoration: InputDecoration(labelText: 'ยอดเงินคงเหลือ'),
+              new StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection('Total').snapshots(),
+                builder: (context, snapshot) {
+                  var length = snapshot.data.documents.length;
+                  DocumentSnapshot ds = snapshot.data.documents[length - 1];
+                  return new TextField(
+                    decoration: InputDecoration(
+                      labelText: 'ยอดเงินคงเหลือ',
+                      alignLabelWithHint: true,
+                    ),
+                    onChanged: (input) {
+                      setState(() {  
+
+                       
+                         int totalBalance = moneyValue + num.tryParse(input) + num.tryParse(ds.data['temp']); 
+                      });
+                    },
+                  );
+                },
               )
             ],
           ),
@@ -223,6 +247,7 @@ class _AddMoneyState extends State<AddMoney> {
         ),
         backgroundColor: Colors.pinkAccent,
         onPressed: () {
+          
           _addMoney();
         },
       ),

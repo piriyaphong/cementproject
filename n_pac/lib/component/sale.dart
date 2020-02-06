@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:n_pac/edit/saleEdit.dart';
 
+
 class Sale extends StatefulWidget {
   @override
   _SaleState createState() => _SaleState();
@@ -392,6 +393,7 @@ class _AddSaleState extends State<AddSale> {
                   );
                 },
               )
+              
             ],
           ),
         ),
@@ -503,7 +505,8 @@ class BillList extends StatelessWidget {
                           stoneType: stoneType,
                           index: document[i].reference)));
                 },
-              )
+              ),
+              
             ],
           ),
         );
